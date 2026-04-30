@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"log-monitor/internal/handler"
 	"log-monitor/internal/model"
+	"log-monitor/internal/router"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -40,7 +40,7 @@ func main() {
 		c.JSON(200, gin.H{"status": "alive"})
 	})
 
-	r.POST("/api/v1/auth/login", handler.LoginHandler)
+	router.SetupRouter(r)
 	
 	port := os.Getenv("PORT")
 	if port == "" {
