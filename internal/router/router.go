@@ -14,10 +14,11 @@ func SetupRouter(r *gin.Engine) {
 	}
 
 	
-	protected := v1.Group("/api/v1")
+	protected := v1.Group("/")
 	protected.Use(middleware.AuthMiddleware()) 
 	{
 		
 		protected.GET("/services", handler.GetServicesHandler)
+        protected.GET("/services/:id/logs", handler.GetInitialLogsHandler)
 	}
 }
