@@ -2,11 +2,13 @@ package main
 
 import (
 	"log"
+	"log-monitor/internal/handler"
 	"log-monitor/internal/model"
 	"os"
-"github.com/robfig/cron/v3"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/robfig/cron/v3"
 )
 
 func main() {
@@ -30,7 +32,7 @@ func main() {
 
 	
 	r := gin.Default()
-	
+
     r.SetTrustedProxies(nil)
 
 	
@@ -38,6 +40,7 @@ func main() {
 		c.JSON(200, gin.H{"status": "alive"})
 	})
 
+	r.POST("/api/v1/auth/login", handler.LoginHandler)
 	
 	port := os.Getenv("PORT")
 	if port == "" {
