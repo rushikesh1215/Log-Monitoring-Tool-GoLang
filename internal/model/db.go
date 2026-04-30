@@ -11,10 +11,18 @@ import (
 var DB *gorm.DB
 
 func InitDB() {
-	dsn := os.Getenv("DB_URL")
-	DB, _ = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	dbUrl := os.Getenv("DB_URL")
+	if dbUrl == "" {
+		log.Fatal("DB_URL is not set in .env")
+	}
 
-	
+	var err error
+
+	DB, err = gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
 	DB.AutoMigrate(&User{}, &Service{})
 
 	
