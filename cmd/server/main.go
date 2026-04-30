@@ -2,8 +2,9 @@ package main
 
 import (
 	"log"
+	"log-monitor/internal/model"
 	"os"
-
+"github.com/robfig/cron/v3"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -14,11 +15,23 @@ func main() {
 		log.Println("No .env file found, using system env")
 	}
 
+	model.InitDB()
+
+	c := cron.New() 
 	
+	c.AddFunc("0 0 25 * *", func() {
+		log.Println("Running cron: Creating next month's partition...")
+		model.EnsureNextMonthPartition()
+	})
+
+	c.Start()
+
 	gin.SetMode(gin.DebugMode)
 
 	
 	r := gin.Default()
+	
+    r.SetTrustedProxies(nil)
 
 	
 	r.GET("/health", func(c *gin.Context) {
