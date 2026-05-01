@@ -8,7 +8,8 @@ import (
 )
 
 func SetupRouter(r *gin.Engine) {
-	
+	r.GET("/ws/:id",middleware.AuthMiddleware(), handler.WebSocketHandler)
+	r.Use(middleware.CORSMiddleware())
 	v1 := r.Group("/api/v1")
 	{
 		v1.POST("/auth/login", handler.LoginHandler)
@@ -22,8 +23,8 @@ func SetupRouter(r *gin.Engine) {
 	protected := v1.Group("/")
 	protected.Use(middleware.AuthMiddleware()) 
 	{
-		
+		protected.GET("/services/:id/logs", handler.GetFilteredLogsHandler)
 		protected.GET("/services", handler.GetServicesHandler)
-        protected.GET("/services/:id/logs", handler.GetInitialLogsHandler)
+        protected.GET("/services/:id/initial-sync", handler.GetInitialLogsHandler)
 	}
 }

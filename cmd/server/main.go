@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"log-monitor/internal/handler"
 	"log-monitor/internal/model"
 	"log-monitor/internal/router"
 	"log-monitor/internal/ws"
@@ -36,7 +35,7 @@ func main() {
 	go ws.GlobalHub.Run() 
 
     r := gin.Default()
-    r.GET("/ws/:id", handler.WebSocketHandler)
+    
 
     r.SetTrustedProxies(nil)
 
